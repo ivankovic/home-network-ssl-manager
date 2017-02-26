@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p ./SECRET/ca/
-mkdir -p ./SECRET/devices/
+mkdir -p ./SECRET/issued/
 
 if [ ! -f ./SECRET/ca/ca.key ]; then
   echo "The CA Root certificate needs to be generated first."
