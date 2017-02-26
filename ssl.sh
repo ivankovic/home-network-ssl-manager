@@ -2,6 +2,17 @@
 
 source ./SECRET/config.sh
 
+check_config () {
+  if [ -z "$DOMAIN" ]; then
+    echo '$DOMAIN is not set.'
+    exit 1
+  fi
+  if [ -z "$PKI_PASSWORD" ]; then
+    echo '$PKI_PASSWORD is not set.'
+    exit 1
+  fi
+}
+
 create_dirs () {
   mkdir -p ./SECRET/ca/
   mkdir -p ./SECRET/issued/
@@ -82,11 +93,17 @@ usage () {
   echo "COMMAND is one of the following:"
   echo "  help - Display this text."
   echo "  new [NAME] - Issue an SSL certificate for [NAME]."
+  echo "  test - Test the config and system environment."
   echo "  purge - Delete EVERYTHING."
 }
 
 case $1 in
+  test)
+    check_config
+    echo "All OK."
+    ;;
   new)
+    check_config
     create_dirs
     issue "$2"
     ;;
