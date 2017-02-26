@@ -5,7 +5,7 @@ create_dirs () {
   mkdir -p ./SECRET/issued/
 }
 
-potato () {
+issue () {
 if [ ! -f ./SECRET/ca/ca.key ]; then
   echo "The CA Root certificate needs to be generated first."
 
@@ -79,9 +79,14 @@ usage () {
   echo ""
   echo "COMMAND is one of the following:"
   echo "  help - Display this text."
+  echo "  new [NAME] - Issue an SSL certificate for [NAME]."
 }
 
 case $1 in
+  new)
+    create_dirs
+    issue "$2"
+    ;;
   *)
     usage
     ;;
