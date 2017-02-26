@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./SECRET/config.sh
+
 create_dirs () {
   mkdir -p ./SECRET/ca/
   mkdir -p ./SECRET/issued/
