@@ -17,7 +17,7 @@ if [ ! -f ./SECRET/ca/ca.key ]; then
 
   SAN="DNS:$DOMAIN" \
   openssl req -new \
-    -config ./SECRET/ca.conf \
+    -config ./ca.conf \
     -out ./SECRET/ca/ca.csr \
     -keyout ./SECRET/ca/ca.key \
     -reqexts ca_reqext \
@@ -29,7 +29,7 @@ if [ ! -f ./SECRET/ca/ca.key ]; then
 
   SAN="DNS:$DOMAIN" \
   openssl ca -selfsign \
-    -config ./SECRET/ca.conf \
+    -config ./ca.conf \
     -in ./SECRET/ca/ca.csr \
     -out ./SECRET/ca/ca.crt \
     -extensions ca_ext \
@@ -47,7 +47,7 @@ if [ ! -f ./SECRET/issued/$1.crt ]; then
 
   SAN="DNS:$CN" \
   openssl req -new \
-    -config ./SECRET/ca.conf \
+    -config ./ca.conf \
     -out ./SECRET/issued/$1.csr \
     -keyout ./SECRET/issued/$1.key \
     -reqexts device_reqext \
@@ -59,7 +59,7 @@ if [ ! -f ./SECRET/issued/$1.crt ]; then
 
   SAN="DNS:$CN" \
   openssl ca \
-    -config ./SECRET/ca.conf \
+    -config ./ca.conf \
     -in ./SECRET/issued/$1.csr \
     -out ./SECRET/issued/$1.crt \
     -extensions device_ext \
