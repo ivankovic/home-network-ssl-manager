@@ -39,32 +39,32 @@ else
   echo "The CA Root Certificate is already present, no need to re-create."
 fi
 
-if [ ! -f ./SECRET/issued/$2.crt ]; then
-  CN="$2.$DOMAIN"
+if [ ! -f ./SECRET/issued/$1.crt ]; then
+  CN="$1.$DOMAIN"
   SUBJECT="/O=Internal Network/CN=$CN/DC=$DOMAIN/"
 
-  echo "Creating DEVICE \"$2\" Certificate Request and key..."
+  echo "Creating DEVICE \"$1\" Certificate Request and key..."
 
   SAN="DNS:$CN" \
   openssl req -new \
     -config ./SECRET/ca.conf \
-    -out ./SECRET/issued/$2.csr \
-    -keyout ./SECRET/issued/$2.key \
+    -out ./SECRET/issued/$1.csr \
+    -keyout ./SECRET/issued/$1.key \
     -reqexts device_reqext \
     -subj "$SUBJECT" \
     -nodes \
     -batch
 
-  echo "Creating DEVICE \"$2\" Certificate..."
+  echo "Creating DEVICE \"$1\" Certificate..."
 
   SAN="DNS:$CN" \
   openssl ca \
     -config ./SECRET/ca.conf \
-    -in ./SECRET/issued/$2.csr \
-    -out ./SECRET/issued/$2.crt \
+    -in ./SECRET/issued/$1.csr \
+    -out ./SECRET/issued/$1.crt \
     -extensions device_ext \
     -passin pass:$PKI_PASSWORD \
     -batch
 else
-  echo "SSL certificate for $2 already present."
+  echo "SSL certificate for $1 already present."
 fi
