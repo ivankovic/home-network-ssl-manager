@@ -1,8 +1,11 @@
 #!/bin/bash
 
-mkdir -p ./SECRET/ca/
-mkdir -p ./SECRET/issued/
+create_dirs () {
+  mkdir -p ./SECRET/ca/
+  mkdir -p ./SECRET/issued/
+}
 
+potato () {
 if [ ! -f ./SECRET/ca/ca.key ]; then
   echo "The CA Root certificate needs to be generated first."
 
@@ -68,3 +71,18 @@ if [ ! -f ./SECRET/issued/$1.crt ]; then
 else
   echo "SSL certificate for $1 already present."
 fi
+}
+
+usage () {
+  echo "Usage:"
+  echo "./ssh.sh COMMAND"
+  echo ""
+  echo "COMMAND is one of the following:"
+  echo "  help - Display this text."
+}
+
+case $1 in
+  *)
+    usage
+    ;;
+esac
