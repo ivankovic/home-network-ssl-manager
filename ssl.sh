@@ -115,6 +115,10 @@ case $1 in
     issue "$2"
     echo "Done."
     ;;
+  remove)
+    rm -v ./SECRET/issued/$2.*
+    echo "Done."
+    ;;
   purge)
     rm -rf ./SECRET/ca/
     rm -rf ./SECRET/issued/
