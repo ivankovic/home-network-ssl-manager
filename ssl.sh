@@ -98,10 +98,11 @@ usage () {
   echo "./ssh.sh COMMAND"
   echo ""
   echo "COMMAND is one of the following:"
-  echo "  help - Display this text."
   echo "  new [NAME] - Issue an SSL certificate for [NAME]."
-  echo "  test - Test the config and system environment."
+  echo "  remove [NAME] - Remove the SSL certificate for [NAME]."
   echo "  purge - Delete EVERYTHING."
+  echo "  test - Test the config and system environment."
+  echo "  help - Display this text."
 }
 
 case $1 in
