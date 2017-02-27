@@ -81,6 +81,13 @@ if [ ! -f ./SECRET/issued/$1.crt ]; then
     -extensions device_ext \
     -passin pass:$PKI_PASSWORD \
     -batch
+
+  echo "Packaging the certificate. You will need to choose a password here."
+
+  openssl pkcs12 -export -clcerts \
+    -in ./SECRET/issued/$1.crt \
+    -inkey ./SECRET/issued/$1.key \
+    -out ./SECRET/issued/$1.p12
 else
   echo "SSL certificate for $1 already present."
 fi
@@ -106,6 +113,7 @@ case $1 in
     check_config
     create_dirs
     issue "$2"
+    echo "Done."
     ;;
   purge)
     rm -rf ./SECRET/ca/
