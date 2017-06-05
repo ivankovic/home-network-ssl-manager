@@ -101,6 +101,7 @@ usage () {
   echo "  new [NAME] - Issue an SSL certificate for [NAME]."
   echo "  remove [NAME] - Remove the SSL certificate for [NAME]."
   echo "  purge - Delete EVERYTHING."
+  echo "  list - List issued certificates."
   echo "  test - Test the config and system environment."
   echo "  help - Display this text."
 }
@@ -124,6 +125,11 @@ case $1 in
     rm -rf ./SECRET/ca/
     rm -rf ./SECRET/issued/
     echo "Done."
+    ;;
+  list)
+    for i in ./SECRET/issued/*.p12; do
+      echo ${i#./SECRET/issued/};
+    done
     ;;
   *)
     usage
