@@ -12,8 +12,8 @@ check_config () {
     echo '$PKI_PASSWORD is not set.'
     FAIL=true
   fi
-  if [ -z "$NETWORK_NAME" ]; then
-    echo '$NETWORK_NAME is not set.'
+  if [ -z "$ORGANIZATION" ]; then
+    echo '$ORGANIZATION is not set.'
     FAIL=true
   fi
   if [ "$FAIL" = true ]; then
@@ -40,18 +40,20 @@ if [ ! -f ./SECRET/ca/ca.key ]; then
   echo "Creating CA Root Certificate Request and key..."
 
   SAN="DNS:$DOMAIN" \
+  ON="$ORGANIZATION" \
   openssl req -new \
     -config ./ca.conf \
     -out ./SECRET/ca/ca.csr \
     -keyout ./SECRET/ca/ca.key \
     -reqexts ca_reqext \
-    -subj "/O=$NETwORK_NAME/CN=$NETwORK_NAME/DC=$DOMAIN/" \
+    -subj "/O=$ORGANIZATION/CN=$ORGANIZATION/DC=$DOMAIN/" \
     -passout pass:$PKI_PASSWORD \
     -batch
 
   echo "Creating CA Root Certificate..."
 
   SAN="DNS:$DOMAIN" \
+  ON="$ORGANIZATION" \
   openssl ca -selfsign \
     -config ./ca.conf \
     -in ./SECRET/ca/ca.csr \
@@ -65,11 +67,12 @@ fi
 
 if [ ! -f ./SECRET/issued/$1.crt ]; then
   CN="$1.$DOMAIN"
-  SUBJECT="/O=$NETwORK_NAME/CN=$CN/DC=$DOMAIN/"
+  SUBJECT="/O=$ORGANIZATION/CN=$CN/DC=$DOMAIN/"
 
   echo "Creating DEVICE \"$1\" Certificate Request and key..."
 
   SAN="DNS:$CN" \
+  ON="$ORGANIZATION" \
   openssl req -new \
     -config ./ca.conf \
     -out ./SECRET/issued/$1.csr \
@@ -82,6 +85,7 @@ if [ ! -f ./SECRET/issued/$1.crt ]; then
   echo "Creating DEVICE \"$1\" Certificate..."
 
   SAN="DNS:$CN" \
+  ON="$ORGANIZATION" \
   openssl ca \
     -config ./ca.conf \
     -in ./SECRET/issued/$1.csr \
