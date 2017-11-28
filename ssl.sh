@@ -3,12 +3,20 @@
 source ./SECRET/config.sh
 
 check_config () {
+  FAIL=false
   if [ -z "$DOMAIN" ]; then
     echo '$DOMAIN is not set.'
-    exit 1
+    FAIL=true
   fi
   if [ -z "$PKI_PASSWORD" ]; then
     echo '$PKI_PASSWORD is not set.'
+    FAIL=true
+  fi
+  if [ -z "$NETWORK_NAME" ]; then
+    echo '$NETWORK_NAME is not set.'
+    FAIL=true
+  fi
+  if [ "$FAIL" = true ]; then
     exit 1
   fi
 }
@@ -37,7 +45,7 @@ if [ ! -f ./SECRET/ca/ca.key ]; then
     -out ./SECRET/ca/ca.csr \
     -keyout ./SECRET/ca/ca.key \
     -reqexts ca_reqext \
-    -subj "/O=Internal Network/CN=Internal Network/DC=$DOMAIN/" \
+    -subj "/O=$NETwORK_NAME/CN=$NETwORK_NAME/DC=$DOMAIN/" \
     -passout pass:$PKI_PASSWORD \
     -batch
 
@@ -57,7 +65,7 @@ fi
 
 if [ ! -f ./SECRET/issued/$1.crt ]; then
   CN="$1.$DOMAIN"
-  SUBJECT="/O=Internal Network/CN=$CN/DC=$DOMAIN/"
+  SUBJECT="/O=$NETwORK_NAME/CN=$CN/DC=$DOMAIN/"
 
   echo "Creating DEVICE \"$1\" Certificate Request and key..."
 
