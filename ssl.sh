@@ -30,8 +30,12 @@ create_dirs () {
 ensure_clr_exists () {
   if [ ! -f ./SECRET/ca/ca.crl ]; then
     echo "CRL does not exist yet. Creating a new CRL."
+
+    SAN="DNS:$DOMAIN" \
+    ON="$ORGANIZATION" \
     openssl ca \
       -config ./ca.conf \
+      -passin pass:$PKI_PASSWORD \
       -gencrl \
       -out ./SECRET/ca/ca.crl
   else
